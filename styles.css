@@ -19,6 +19,7 @@
   --color-overlay: rgba(58, 50, 40, 0.6);
   --color-kakao: #fee500;
   --color-naver: #03c75a;
+  --color-google: #0000FF;
   --color-white: #ffffff;
   --color-toast-bg: rgba(58, 50, 40, 0.9);
 
@@ -977,6 +978,18 @@ a {
 }
 
 .btn--naver:hover {
+  filter: brightness(0.9);
+}
+
+.btn--google {
+  background: var(--color-google);
+  color: var(--color-white);
+  padding: 0.75rem 1.75rem;
+  border-radius: var(--radius-sm);
+  font-weight: 400;
+}
+
+.btn--google:hover {
   filter: brightness(0.9);
 }
 

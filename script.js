@@ -320,7 +320,7 @@
         diff / (1000 * 60 * 60 * 24)
       );
 
-      labelEl.textContent = `Until the wedding: D-${totalDays}`;
+      labelEl.textContent = `Until the wedding: ${totalDays} days`;
 
       const days = Math.floor(
         diff / (1000 * 60 * 60 * 24)
@@ -359,49 +359,13 @@
     const g = CONFIG.groom;
     const b = CONFIG.bride;
 
-    function parentLine(
-      father,
-      mother,
-      fatherDeceased,
-      motherDeceased
-    ) {
-      const fd = fatherDeceased ? ' deceased' : '';
-      const md = motherDeceased ? ' deceased' : '';
-
-      return `
-        <span class="${fd}">${father}</span>
-        ·
-        <span class="${md}">${mother}</span>
-      `;
-    }
-
-    const parentsHTML = `
+    $('#greetingParents').innerHTML = `
       <div class="parent-row">
-        ${parentLine(
-          g.father,
-          g.mother,
-          g.fatherDeceased,
-          g.motherDeceased
-        )}
-        <span class="parent-dot">●</span>
-        <span>Son of</span>
         <span class="child-name">${g.name}</span>
-      </div>
-
-      <div class="parent-row">
-        ${parentLine(
-          b.father,
-          b.mother,
-          b.fatherDeceased,
-          b.motherDeceased
-        )}
-        <span class="parent-dot">●</span>
-        <span>Daughter of</span>
+        <span class="parent-dot">♥</span>
         <span class="child-name">${b.name}</span>
       </div>
     `;
-
-    $('#greetingParents').innerHTML = parentsHTML;
   }
 
   /* ═══════════════════════════════════════════
@@ -829,6 +793,9 @@
     $('#naverMapBtn').href =
       w.mapLinks.naver || '#';
 
+    $('#googleMapBtn').href =
+      w.mapLinks.google || '#';
+
     $('#copyAddressBtn').addEventListener(
       'click',
       () => {
@@ -907,10 +874,10 @@
       'groomAccountList'
     );
 
-    renderAccounts(
-      CONFIG.accounts.bride,
-      'brideAccountList'
-    );
+//    renderAccounts(
+//      CONFIG.accounts.bride,
+//      'brideAccountList'
+//    );
 
     initAccordion(
       'groomAccordion',
@@ -1060,7 +1027,7 @@
     // Initialize sections that don't depend on image detection
     initPhotoModal();
     initLocation();
-    initAccounts();
+//    initAccounts();
     initFooter();
     initScrollAnimations();
 

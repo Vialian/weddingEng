@@ -27,7 +27,7 @@ const CONFIG = {
   },
 
   bride: {
-    name: "김서영",
+    name: "Seoyoung",
     nameEn: "Seoyoung",
     father: "김형식",
     mother: "방종숙",
@@ -38,11 +38,12 @@ const CONFIG = {
   wedding: {
     date: "2027-03-27",
     time: "17:00",
-    venue: "원인재 웨딩",
-    address: "인천광역시 연수구 경원대로 322 (연수동)",
+    venue: "Woninjae Wedding",
+    address: "322 Gyeongwon-daero, Yeonsu-gu, Incheon, South Korea",
     mapLinks: {
       kakao: "https://kko.to/6FTOPLjjCm",
-      naver: "https://naver.me/5LHHxqFN"
+      naver: "https://naver.me/5LHHxqFN",
+      google: "https://www.google.com/maps?q=South+Korea,+Incheon,+Yeonsu-gu,+Gyeongwon-daero,+322+%EC%9B%90%EC%9D%B8%EC%9E%AC%EC%9B%A8%EB%94%A9&ftid=0x357b7901407a22f9:0x24e84e45054189e8&entry=gps&shh=CAE&lucs=,100834232,121816461,94297699,94231188,94280568,100821559,47071704,94218641,94282134,100835694,94286869,100820247,100822504&g_ep=CAISEjI2LjM2LjMuOTczNTQ4ODUxMBgAIIgnKnssMTAwODM0MjMyLDEyMTgxNjQ2MSw5NDI5NzY5OSw5NDIzMTE4OCw5NDI4MDU2OCwxMDA4MjE1NTksNDcwNzE3MDQsOTQyMTg2NDEsOTQyODIxMzQsMTAwODM1Njk0LDk0Mjg2ODY5LDEwMDgyMDI0NywxMDA4MjI1MDRCAkRL&skid=9647da31-ca41-4e46-b938-fc082fcf248b&g_st=ic&ucbcb=1"
     }
   },
 
@@ -64,14 +65,8 @@ const CONFIG = {
   // ── 마음 전하실 곳 ──
   accounts: {
     groom: [
-      { role: "신랑", name: "홍길동", bank: "국민은행", number: "000-000-000000" },
-      { role: "아버지", name: "홍판서", bank: "신한은행", number: "000-000-000000" },
-      { role: "어머니", name: "김부인", bank: "우리은행", number: "000-000-000000" }
     ],
     bride: [
-      { role: "신부", name: "김영희", bank: "하나은행", number: "000-000-000000" },
-      { role: "아버지", name: "김사장", bank: "기업은행", number: "000-000-000000" },
-      { role: "어머니", name: "이부인", bank: "농협은행", number: "000-000-000000" }
     ]
   },
 
