@@ -1008,6 +1008,26 @@
     });
   }
 
+  /* FAQ */
+  document.querySelectorAll('.faq__question').forEach((question) => {
+    question.addEventListener('click', () => {
+      const answer = question.nextElementSibling;
+      const isOpen = question.getAttribute('aria-expanded') === 'true';
+
+      // Close all other FAQ items
+      document.querySelectorAll('.faq__question').forEach((item) => {
+        item.setAttribute('aria-expanded', 'false');
+        item.nextElementSibling.style.maxHeight = null;
+      });
+
+      // Open the selected item
+      if (!isOpen) {
+        question.setAttribute('aria-expanded', 'true');
+        answer.style.maxHeight = answer.scrollHeight + 'px';
+      }
+    });
+  });
+
   /* ═══════════════════════════════════════════
      Initialization
      ═══════════════════════════════════════════ */
