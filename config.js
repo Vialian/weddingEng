@@ -72,7 +72,7 @@ const CONFIG = {
 
   // ── 링크 공유 시 나타나는 문구 ──
   meta: {
-    title: "신랑 ♥ 신부 결혼합니다",
-    description: "2025년 1월 1일, 소중한 분들을 초대합니다."
+    title: "We're Getting Married",
+    description: "We’re getting married and would love to celebrate this special day with you."
   }
 };
