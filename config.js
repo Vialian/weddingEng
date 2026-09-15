@@ -49,14 +49,14 @@ const CONFIG = {
 
   // ── 인사말 ──
   greeting: {
-    title: "소중한 분들을 초대합니다",
-    content: "서로 다른 길을 걸어온 두 사람이\n이제 같은 길을 함께 걸어가려 합니다.\n\n저희의 새로운 시작을\n축복해 주시면 감사하겠습니다."
+    title: "We’re getting married",
+    content: "We’re getting married\nand would love to celebrate\nwith you."
   },
 
   // ── 우리의 이야기 ──
   story: {
-    title: "우리의 이야기",
-    content: "서로 다른 길을 걷던 두 사람이\n하나의 길을 함께 걷게 되었습니다.\n\n여러분을 소중한 자리에 초대합니다."
+    title: "A Note to Our Guests",
+    content: "We know it’s a long way to travel, and we completely understand if you’re unable to make it.\nBut if you can, we’d really love to have you there and celebrate together."
   },
 
   // ── 오시는 길 ──
