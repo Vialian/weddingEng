@@ -199,27 +199,53 @@
 <!--  </section>-->
 
   <!-- ─── Google Drive Photo Upload Section ─── -->
+
+
   <section class="section photo-upload" id="photoUpload">
     <div class="section__inner">
       <h2 class="section__title animate-item" data-animate="fade-up">
-        Google Drive
+        Share Your Photos
       </h2>
 
       <p class="photo-upload__text animate-item" data-animate="fade-up">
-        Please upload wedding pictures here
+        Please share your wedding pictures with us.
       </p>
 
-      <a
-              class="btn btn--outline animate-item"
-              data-animate="fade-up"
-              href="https://google.dk"
-              target="_blank"
-              rel="noopener noreferrer"
-      >
-        Upload Wedding Pictures
-      </a>
+      <form id="photoUploadForm">
+        <input
+                type="file"
+                id="weddingPhotoFiles"
+                accept=".jpg,.jpeg,.png,.webp,.heic,.heif"
+                multiple
+                required
+        >
+
+        <p class="photo-upload__text">
+          Upload up to 30 photos at a time.
+          Each photo can be up to 30 MB.
+        </p>
+
+        <button
+                class="btn btn--outline"
+                id="photoUploadSubmit"
+                type="submit"
+        >
+          Upload Photos
+        </button>
+
+        <p id="photoUploadStatus" role="status" aria-live="polite"></p>
+      </form>
+
+      <iframe
+              id="photoUploadFrame"
+              name="photoUploadFrame"
+              title="Photo upload status"
+              hidden
+      ></iframe>
     </div>
   </section>
+
+
 
   <!-- ─── FAQ Section ─── -->
   <section class="section faq" id="faq">

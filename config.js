@@ -12,10 +12,14 @@
  *   images/og/1.jpg        - 카카오톡 공유 썸네일 (1장)
  */
 
+// ── Google Drive Photo Upload ──
+
+
+
 const CONFIG = {
   // ── 초대장 열기 ──
   useCurtain: false,  // 초대장 열기 화면 사용 여부 (true: 사용, false: 바로 본문 표시)
-
+  googleDriveUploadUrl: "https://script.google.com/macros/s/AKfycbxBZdlOZQlELyzwC5orwV4yC4zrGgUrCNpYlGKY60ASzGirJc8aKmGIEVgIX8iAQ5ZX/exec",
   // ── 메인 (히어로) ──
   groom: {
     name: "Søren",

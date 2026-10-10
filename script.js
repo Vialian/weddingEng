@@ -1028,6 +1028,198 @@
     });
   });
 
+  /* Google drive upload */
+
+
+  /* Google Drive photo upload */
+
+
+function initGoogleDriveUpload() {
+  const button = document.getElementById('googleDriveUploadBtn');
+
+  if (button) {
+    const driveUrl = CONFIG.googleDriveUploadUrl;
+
+    if (driveUrl) {
+      button.href = driveUrl;
+    } else {
+      button.style.display = 'none';
+    }
+  }
+
+  const form = document.getElementById('photoUploadForm');
+  const fileInput = document.getElementById('weddingPhotoFiles');
+  const submitButton = document.getElementById('photoUploadSubmit');
+  const status = document.getElementById('photoUploadStatus');
+  const frame = document.getElementById('photoUploadFrame');
+
+  if (!form || !fileInput || !submitButton || !status || !frame) {
+    console.error('Photo upload form elements are missing.');
+    return;
+  }
+
+  const uploadUrl = CONFIG.googleDriveUploadUrl;
+
+  if (!uploadUrl || !uploadUrl.includes('/exec')) {
+    status.textContent = 'Photo upload is not configured correctly.';
+    return;
+  }
+
+  const allowedTypes = [
+    'image/jpeg',
+    'image/png',
+    'image/webp',
+    'image/heic',
+    'image/heif'
+  ];
+
+  form.addEventListener('submit', async function (event) {
+    event.preventDefault();
+
+    const files = Array.from(fileInput.files || []);
+
+    if (files.length === 0) {
+      status.textContent = 'Please select at least one photo.';
+      return;
+    }
+
+    if (files.length > 30) {
+      status.textContent = 'Please select no more than 30 photos at a time.';
+      return;
+    }
+
+    for (const file of files) {
+      if (!allowedTypes.includes(file.type)) {
+        status.textContent = `Unsupported photo type: ${file.name}`;
+        return;
+      }
+
+      if (file.size > 30 * 1024 * 1024) {
+        status.textContent = `${file.name} is larger than 30 MB.`;
+        return;
+      }
+    }
+
+    submitButton.disabled = true;
+    fileInput.disabled = true;
+    let uploaded = 0;
+
+    try {
+      for (const file of files) {
+        status.textContent =
+          `Preparing photo ${uploaded + 1} of ${files.length}...`;
+
+        const base64 = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+
+          reader.onload = () => {
+            const result = String(reader.result || '');
+            resolve(result.substring(result.indexOf(',') + 1));
+          };
+
+          reader.onerror = () => {
+            reject(new Error(`Could not read ${file.name}`));
+          };
+
+          reader.readAsDataURL(file);
+        });
+
+        status.textContent =
+          `Uploading photo ${uploaded + 1} of ${files.length}...`;
+
+        await new Promise((resolve, reject) => {
+          const requestId =
+            `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+
+          let completed = false;
+
+          const finish = (error) => {
+            if (completed) return;
+            completed = true;
+
+            clearTimeout(timeout);
+            window.removeEventListener('message', onMessage);
+
+            if (error) reject(error);
+            else resolve();
+          };
+
+          const timeout = setTimeout(() => {
+            finish(new Error(
+              'No upload confirmation received. Check the Apps Script deployment and browser console.'
+            ));
+          }, 120000);
+
+          function onMessage(event) {
+            const data = event.data;
+
+            if (
+              !data ||
+              data.type !== 'wedding-upload' ||
+              data.requestId !== requestId
+            ) {
+              return;
+            }
+
+            // Apps Script can return through script.googleusercontent.com.
+            // Match the request ID and message type rather than assuming
+            // the response origin is always the original /exec URL.
+            if (data.success) {
+              finish();
+            } else {
+              finish(new Error(data.message || 'Google Drive rejected the upload.'));
+            }
+          }
+
+          window.addEventListener('message', onMessage);
+
+          const uploadForm = document.createElement('form');
+          uploadForm.method = 'POST';
+          uploadForm.action = uploadUrl;
+          uploadForm.target = frame.name;
+          uploadForm.style.display = 'none';
+
+          const payloadInput = document.createElement('input');
+          payloadInput.type = 'hidden';
+          payloadInput.name = 'payload';
+          payloadInput.value = JSON.stringify({
+            requestId,
+            files: [{
+              name: file.name,
+              type: file.type,
+              data: base64
+            }]
+          });
+
+          uploadForm.appendChild(payloadInput);
+          document.body.appendChild(uploadForm);
+          uploadForm.submit();
+          uploadForm.remove();
+        });
+
+        uploaded++;
+      }
+
+      status.textContent =
+        `Success! All ${uploaded} photo(s) uploaded. Thank you!`;
+
+      form.reset();
+
+    } catch (error) {
+      console.error('Wedding photo upload failed:', error);
+
+      status.textContent =
+        `Upload stopped after ${uploaded} of ${files.length} photos. ${error.message}`;
+    } finally {
+      submitButton.disabled = false;
+      fileInput.disabled = false;
+    }
+  });
+}
+
+
+
+
   /* ═══════════════════════════════════════════
      Initialization
      ═══════════════════════════════════════════ */
@@ -1040,6 +1232,7 @@
     initCountdown();
     initGreeting();
     initCalendar();
+    initGoogleDriveUpload();
 
     // Show loading placeholders while detecting images
     showLoadingPlaceholders();
