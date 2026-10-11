@@ -1303,11 +1303,16 @@ function initRsvp() {
   function setGuests(value) {
     const parsed = Number(value);
     const guests = Number.isFinite(parsed)
-      ? Math.max(0, Math.min(5, Math.floor(parsed)))
-      : 0;
+      ? Math.max(1, Math.min(5, Math.floor(parsed)))
+      : 1;
 
     slider.value = String(guests);
     numberInput.value = String(guests);
+
+    const guestLabel = document.getElementById('rsvpGuestLabel');
+    if (guestLabel) {
+      guestLabel.textContent = guests === 1 ? 'guest' : 'guests';
+    }
   }
 
   slider.addEventListener('input', () => setGuests(slider.value));
@@ -1328,36 +1333,11 @@ function initRsvp() {
       )?.value === 'Yes';
 
       guestSection.hidden = !attending;
-      if (!attending) setGuests(0);
+
+      if (attending) {
+        setGuests(1);
+      }
     });
-  });
-
-window.addEventListener('message', (event) => {
-  // Only accept responses from the RSVP iframe.
-  if (event.source !== responseFrame.contentWindow) return;
-
-  const data = event.data;
-    if (
-      !data ||
-      data.type !== 'wedding-rsvp' ||
-      data.requestId !== activeRequestId
-    ) {
-      return;
-    }
-
-    clearTimeout(timeoutId);
-    activeRequestId = null;
-    submitButton.disabled = false;
-
-    if (data.success) {
-      status.textContent = 'Thank you! Your RSVP has been received.';
-      form.reset();
-      setGuests(0);
-      guestSection.hidden = true;
-    } else {
-      status.textContent =
-        data.message || 'Sorry, your RSVP could not be submitted. Please try again.';
-    }
   });
 
   form.addEventListener('submit', (event) => {
@@ -1365,9 +1345,7 @@ window.addEventListener('message', (event) => {
 
     if (activeRequestId) return;
 
-    if (
-      !RSVP_WEB_APP_URL.startsWith('https://script.google.com/')
-    ) {
+    if (!RSVP_WEB_APP_URL.startsWith('https://script.google.com/')) {
       status.textContent = 'Please configure the RSVP submission URL.';
       return;
     }
@@ -1383,7 +1361,7 @@ window.addEventListener('message', (event) => {
     }
 
     const guests = attendance === 'Yes'
-      ? Math.max(0, Math.min(5, Math.floor(Number(numberInput.value) || 0)))
+      ? Math.max(1, Math.min(5, Math.floor(Number(numberInput.value) || 1)))
       : 0;
 
     const requestId = (
@@ -1403,6 +1381,43 @@ window.addEventListener('message', (event) => {
     activeRequestId = requestId;
     submitButton.disabled = true;
     status.textContent = 'Sending your RSVP...';
+    status.classList.remove('rsvp__status--success', 'rsvp__status--error');
+
+    const onMessage = (event) => {
+      const data = event.data;
+
+      if (
+        !data ||
+        data.type !== 'wedding-rsvp' ||
+        data.requestId !== requestId
+      ) {
+        return;
+      }
+
+      window.removeEventListener('message', onMessage);
+      clearTimeout(timeoutId);
+
+      activeRequestId = null;
+      submitButton.disabled = false;
+
+      if (data.success) {
+        status.textContent = 'Thank you! Your RSVP has been received.';
+        status.classList.remove('rsvp__status--error');
+        status.classList.add('rsvp__status--success');
+
+        form.reset();
+        setGuests(1);
+        guestSection.hidden = true;
+      } else {
+        status.textContent =
+          data.message || 'Sorry, your RSVP could not be submitted. Please try again.';
+
+        status.classList.remove('rsvp__status--success');
+        status.classList.add('rsvp__status--error');
+      }
+    };
+
+    window.addEventListener('message', onMessage);
 
     const postForm = document.createElement('form');
     postForm.method = 'POST';
@@ -1423,13 +1438,16 @@ window.addEventListener('message', (event) => {
     timeoutId = setTimeout(() => {
       if (activeRequestId !== requestId) return;
 
+      window.removeEventListener('message', onMessage);
       activeRequestId = null;
       submitButton.disabled = false;
+
       status.textContent =
-        'We could not confirm your RSVP. Please check before submitting again.';
+        'We could not confirm your RSVP. Please check your spreadsheet before trying again.';
     }, 45000);
   });
 }
+
 
 initRsvp();
 

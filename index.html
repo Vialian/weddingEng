@@ -290,36 +290,35 @@
         </fieldset>
 
         <div class="rsvp__field" id="rsvpGuestSection" hidden>
-          <label for="rsvpGuests">Number of Guests</label>
+          <label for="rsvpGuests">
+            How many will attend, including you?
+          </label>
 
           <div class="rsvp__guest-controls">
             <input
                     id="rsvpGuestSlider"
                     type="range"
-                    min="0"
+                    min="1"
                     max="5"
                     step="1"
-                    value="0"
-                    aria-label="Adjust number of guests"
+                    value="1"
+                    aria-label="Number of people attending, including you"
             >
 
             <input
                     id="rsvpGuests"
                     name="guests"
                     type="number"
-                    min="0"
+                    min="1"
                     max="5"
                     step="1"
-                    value="0"
+                    value="1"
                     inputmode="numeric"
-                    aria-label="Number of guests"
+                    aria-label="Number of people attending, including you"
             >
           </div>
-
-          <p class="rsvp__hint">
-            Choose a number between 0 and 5.
-          </p>
         </div>
+
 
         <div class="rsvp__field">
           <label for="rsvpNotes">Additional Comments</label>
