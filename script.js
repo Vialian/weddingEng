@@ -1380,7 +1380,8 @@ function initRsvp() {
 
     activeRequestId = requestId;
     submitButton.disabled = true;
-    status.textContent = 'Sending your RSVP...';
+    status.innerHTML =
+      '<span class="rsvp-loader" aria-hidden="true"></span> Sending your RSVP...';
     status.classList.remove('rsvp__status--success', 'rsvp__status--error');
 
     const onMessage = (event) => {
@@ -1447,6 +1448,7 @@ function initRsvp() {
     }, 45000);
   });
 }
+
 
 
 initRsvp();

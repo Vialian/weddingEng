@@ -1411,3 +1411,115 @@ a {
     gap: 12px;
   }
 }
+
+/* ═══ Elegant RSVP Submit Button ═══ */
+
+#rsvpSubmit {
+  width: 100%;
+  min-height: 54px;
+  margin-top: 12px;
+  padding: 15px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 11px;
+
+  background: #76634f;
+  color: #fffdf9;
+  border: 1px solid #76634f;
+  border-radius: 3px;
+
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 19px;
+  font-weight: 500;
+  letter-spacing: 1.2px;
+
+  cursor: pointer;
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s ease,
+    opacity 0.25s ease;
+}
+
+#rsvpSubmit:hover:not(:disabled) {
+  background: #5f4e3d;
+  border-color: #5f4e3d;
+  box-shadow: 0 5px 16px rgba(70, 50, 30, 0.14);
+  transform: translateY(-1px);
+}
+
+#rsvpSubmit:focus-visible {
+  outline: 2px solid #a8957d;
+  outline-offset: 4px;
+}
+
+#rsvpSubmit:disabled {
+  cursor: wait;
+  opacity: 0.85;
+}
+
+/* Animated loading spinner */
+#rsvpSubmit.is-loading::before {
+  content: "";
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+  border: 2px solid rgba(255, 253, 249, 0.4);
+  border-top-color: #fffdf9;
+  border-radius: 50%;
+  animation: rsvp-spin 0.75s linear infinite;
+}
+
+@keyframes rsvp-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* RSVP status messages */
+#rsvpStatus {
+  margin-top: 16px;
+  text-align: center;
+  line-height: 1.6;
+  font-size: 15px;
+}
+
+#rsvpStatus.rsvp__status--success {
+  color: #526b51;
+}
+
+#rsvpStatus.rsvp__status--error {
+  color: #a34842;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #rsvpSubmit {
+    transition: none;
+  }
+
+  #rsvpSubmit.is-loading::before {
+    animation-duration: 1.8s;
+  }
+}
+
+
+/* Small spinner beside the RSVP status text */
+.rsvp-loader {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-right: 7px;
+  vertical-align: -1px;
+  border: 2px solid #d9cfc2;
+  border-top-color: #76634f;
+  border-radius: 50%;
+  animation: rsvp-spin 0.75s linear infinite;
+}
+
+@keyframes rsvp-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
