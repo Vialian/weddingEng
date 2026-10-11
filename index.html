@@ -233,6 +233,12 @@
           Upload Photos
         </button>
 
+        <div id="photoUploadLoader" class="photo-upload__progress-loader" hidden>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
         <p id="photoUploadStatus" role="status" aria-live="polite"></p>
       </form>
 
@@ -443,5 +449,34 @@
 </main>
 
 <script src="script.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const loader = document.getElementById("photoUploadLoader");
+  const status = document.getElementById("photoUploadStatus");
+
+  if (!loader || !status) return;
+
+  function updatePhotoLoader() {
+    const message = status.textContent.trim();
+
+    loader.hidden = !/uploading\s+photo/i.test(message);
+  }
+
+  const observer = new MutationObserver(updatePhotoLoader);
+
+  observer.observe(status, {
+    childList: true,
+    characterData: true,
+    subtree: true
+  });
+
+  updatePhotoLoader();
+});
+</script>
+<script src="script.js"></script>
+</body>
+
+
 </body>
 </html>

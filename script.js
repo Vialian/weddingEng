@@ -583,42 +583,41 @@
 
   function initGallery(galleryImages) {
     const grid = $('#galleryGrid');
+    if (!grid) return;
 
-    // Remove loading placeholder if present
-    const placeholder =
-      grid.querySelector('.loading-placeholder');
+    // Clear all existing gallery items before adding photos
+    grid.innerHTML = '';
 
-    if (placeholder) {
-      placeholder.remove();
-    }
+    // Display only the first 6 pictures
+    const photos = galleryImages.slice(0, 6);
 
-    if (galleryImages.length === 0) {
-      // Hide gallery section if no images are found
+    if (photos.length === 0) {
       const gallerySection = $('#gallery');
-
       if (gallerySection) {
         gallerySection.style.display = 'none';
       }
-
       return;
     }
 
-    galleryImages.forEach((src, i) => {
-      const div = document.createElement('div');
+    const gallerySection = $('#gallery');
+    if (gallerySection) {
+      gallerySection.style.display = '';
+    }
 
+    photos.forEach((src, i) => {
+      const div = document.createElement('div');
       div.className = 'gallery__item animate-item';
       div.setAttribute('data-animate', 'scale-in');
 
-      div.innerHTML = `
-        <img
-          src="${src}"
-          alt="Gallery Photo ${i + 1}"
-          loading="lazy"
-        >
-      `;
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = `Gallery Photo ${i + 1}`;
+      img.loading = 'lazy';
+
+      div.appendChild(img);
 
       div.addEventListener('click', () => {
-        openPhotoModal(galleryImages, i);
+        openPhotoModal(photos, i);
       });
 
       grid.appendChild(div);
@@ -1455,6 +1454,25 @@ initRsvp();
 
 
 
+// Helper
+const photoUploadLoader = document.getElementById("photoUploadLoader");
+const photoUploadStatus = document.getElementById("photoUploadStatus");
+
+function showPhotoUploadLoader(message) {
+  if (photoUploadLoader) {
+    photoUploadLoader.hidden = false;
+  }
+
+  if (photoUploadStatus && message) {
+    photoUploadStatus.textContent = message;
+  }
+}
+
+function hidePhotoUploadLoader() {
+  if (photoUploadLoader) {
+    photoUploadLoader.hidden = true;
+  }
+}
 
 
 
