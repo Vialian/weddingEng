@@ -1263,3 +1263,151 @@ a {
   line-height: 1.9;
   color: var(--color-text-light);
 }
+
+
+/* ═══ Wedding RSVP ═══ */
+.rsvp__text {
+  max-width: 480px;
+  margin: 0 auto 32px;
+  text-align: center;
+  line-height: 1.8;
+}
+
+.rsvp__form {
+  width: min(100%, 480px);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  text-align: left;
+}
+
+.rsvp__field {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.rsvp__field > label,
+.rsvp__attendance legend {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.25rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+}
+
+.rsvp__form input[type="text"],
+.rsvp__form input[type="number"],
+.rsvp__form textarea {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 13px 14px;
+  border: 1px solid rgba(130, 108, 88, 0.35);
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.65);
+  color: inherit;
+  font: inherit;
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease;
+}
+
+.rsvp__form input:focus-visible,
+.rsvp__form textarea:focus-visible {
+  outline: 1px solid #927b65;
+  outline-offset: 2px;
+}
+
+.rsvp__form textarea {
+  resize: vertical;
+  min-height: 110px;
+  line-height: 1.7;
+}
+
+.rsvp__attendance {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.rsvp__attendance legend {
+  margin-bottom: 16px;
+}
+
+.rsvp__choice {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.rsvp__choice input {
+  width: 17px;
+  height: 17px;
+  margin: 0;
+  accent-color: #927b65;
+  flex-shrink: 0;
+}
+
+.rsvp__guest-controls {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 76px;
+  gap: 18px;
+  align-items: center;
+}
+
+.rsvp__guest-controls input[type="range"] {
+  width: 100%;
+  accent-color: #927b65;
+  cursor: pointer;
+}
+
+.rsvp__guest-controls input[type="number"] {
+  text-align: center;
+  padding: 10px 4px;
+}
+
+.rsvp__hint {
+  margin: 0;
+  font-size: 0.8rem;
+  opacity: 0.7;
+  line-height: 1.5;
+}
+
+.rsvp__submit {
+  align-self: center;
+  min-width: 180px;
+  margin-top: 4px;
+}
+
+.rsvp__status {
+  min-height: 1.5em;
+  margin: 0;
+  text-align: center;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.rsvp__status:empty {
+  display: none;
+}
+
+.rsvp__form [hidden] {
+  display: none !important;
+}
+
+@media (max-width: 480px) {
+  .rsvp__form {
+    gap: 20px;
+  }
+
+  .rsvp__guest-controls {
+    grid-template-columns: minmax(0, 1fr) 68px;
+    gap: 12px;
+  }
+}

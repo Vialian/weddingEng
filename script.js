@@ -1105,11 +1105,15 @@ function initGoogleDriveUpload() {
     let uploaded = 0;
 
     try {
-      for (const file of files) {
-        status.textContent =
-          `Preparing photo ${uploaded + 1} of ${files.length}...`;
 
-        const base64 = await new Promise((resolve, reject) => {
+        for (const originalFile of files) {
+          status.textContent =
+            `Compressing photo ${uploaded + 1} of ${files.length}...`;
+
+          const file = await compressWeddingPhoto(originalFile);
+
+          const base64 = await new Promise((resolve, reject) => {
+
           const reader = new FileReader();
 
           reader.onload = () => {
@@ -1216,6 +1220,220 @@ function initGoogleDriveUpload() {
     }
   });
 }
+
+
+
+async function compressWeddingPhoto(file) {
+  // Only try to compress common browser-supported image types.
+  if (
+    !['image/jpeg', 'image/png', 'image/webp'].includes(file.type)
+  ) {
+    return file;
+  }
+
+  let image;
+
+  try {
+    image = await createImageBitmap(file);
+
+    const maxDimension = 2000;
+    const scale = Math.min(
+      1,
+      maxDimension / Math.max(image.width, image.height)
+    );
+
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.round(image.width * scale);
+    canvas.height = Math.round(image.height * scale);
+
+    const context = canvas.getContext('2d');
+    if (!context) {
+      return file;
+    }
+
+    context.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+    const compressedBlob = await new Promise((resolve) => {
+      canvas.toBlob(resolve, 'image/jpeg', 0.8);
+    });
+
+    // If compression fails, upload the original photo instead.
+    if (!compressedBlob) {
+      return file;
+    }
+
+    return new File(
+      [compressedBlob],
+      file.name.replace(/\.[^.]+$/, '') + '.jpg',
+      { type: 'image/jpeg', lastModified: Date.now() }
+    );
+
+  } catch (error) {
+    // An image that cannot be decoded should not stop all uploads.
+    console.warn('Could not compress photo; using original:', file.name, error);
+    return file;
+
+  } finally {
+    if (image) {
+      image.close();
+    }
+  }
+}
+
+
+
+/* ═══ Wedding RSVP ═══ */
+
+// Use the same deployed Apps Script URL as the photo uploader.
+const RSVP_WEB_APP_URL = CONFIG.googleDriveUploadUrl;
+function initRsvp() {
+  const form = document.getElementById('rsvpForm');
+  if (!form) return;
+
+  const guestSection = document.getElementById('rsvpGuestSection');
+  const slider = document.getElementById('rsvpGuestSlider');
+  const numberInput = document.getElementById('rsvpGuests');
+  const submitButton = document.getElementById('rsvpSubmit');
+  const status = document.getElementById('rsvpStatus');
+  const responseFrame = document.getElementById('rsvpResponseFrame');
+
+  let activeRequestId = null;
+  let timeoutId = null;
+
+  function setGuests(value) {
+    const parsed = Number(value);
+    const guests = Number.isFinite(parsed)
+      ? Math.max(0, Math.min(5, Math.floor(parsed)))
+      : 0;
+
+    slider.value = String(guests);
+    numberInput.value = String(guests);
+  }
+
+  slider.addEventListener('input', () => setGuests(slider.value));
+
+  numberInput.addEventListener('input', () => {
+    if (numberInput.value === '') return;
+    setGuests(numberInput.value);
+  });
+
+  numberInput.addEventListener('change', () => {
+    setGuests(numberInput.value);
+  });
+
+  form.querySelectorAll('input[name="attendance"]').forEach((radio) => {
+    radio.addEventListener('change', () => {
+      const attending = form.querySelector(
+        'input[name="attendance"]:checked'
+      )?.value === 'Yes';
+
+      guestSection.hidden = !attending;
+      if (!attending) setGuests(0);
+    });
+  });
+
+window.addEventListener('message', (event) => {
+  // Only accept responses from the RSVP iframe.
+  if (event.source !== responseFrame.contentWindow) return;
+
+  const data = event.data;
+    if (
+      !data ||
+      data.type !== 'wedding-rsvp' ||
+      data.requestId !== activeRequestId
+    ) {
+      return;
+    }
+
+    clearTimeout(timeoutId);
+    activeRequestId = null;
+    submitButton.disabled = false;
+
+    if (data.success) {
+      status.textContent = 'Thank you! Your RSVP has been received.';
+      form.reset();
+      setGuests(0);
+      guestSection.hidden = true;
+    } else {
+      status.textContent =
+        data.message || 'Sorry, your RSVP could not be submitted. Please try again.';
+    }
+  });
+
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    if (activeRequestId) return;
+
+    if (
+      !RSVP_WEB_APP_URL.startsWith('https://script.google.com/')
+    ) {
+      status.textContent = 'Please configure the RSVP submission URL.';
+      return;
+    }
+
+    const name = document.getElementById('rsvpName').value.trim();
+    const attendance = form.querySelector(
+      'input[name="attendance"]:checked'
+    )?.value;
+
+    if (!name || !['Yes', 'No'].includes(attendance)) {
+      status.textContent = 'Please enter your name and select your attendance.';
+      return;
+    }
+
+    const guests = attendance === 'Yes'
+      ? Math.max(0, Math.min(5, Math.floor(Number(numberInput.value) || 0)))
+      : 0;
+
+    const requestId = (
+      window.crypto?.randomUUID?.() ||
+      `${Date.now()}-${Math.random().toString(36).slice(2)}`
+    );
+
+    const payload = {
+      type: 'wedding-rsvp',
+      requestId,
+      name,
+      attendance,
+      guests,
+      notes: document.getElementById('rsvpNotes').value.trim()
+    };
+
+    activeRequestId = requestId;
+    submitButton.disabled = true;
+    status.textContent = 'Sending your RSVP...';
+
+    const postForm = document.createElement('form');
+    postForm.method = 'POST';
+    postForm.action = RSVP_WEB_APP_URL;
+    postForm.target = responseFrame.name;
+    postForm.hidden = true;
+
+    const payloadInput = document.createElement('input');
+    payloadInput.type = 'hidden';
+    payloadInput.name = 'payload';
+    payloadInput.value = JSON.stringify(payload);
+
+    postForm.appendChild(payloadInput);
+    document.body.appendChild(postForm);
+    postForm.submit();
+    postForm.remove();
+
+    timeoutId = setTimeout(() => {
+      if (activeRequestId !== requestId) return;
+
+      activeRequestId = null;
+      submitButton.disabled = false;
+      status.textContent =
+        'We could not confirm your RSVP. Please check before submitting again.';
+    }, 45000);
+  });
+}
+
+initRsvp();
+
+
 
 
 

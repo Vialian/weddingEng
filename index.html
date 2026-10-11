@@ -246,6 +246,109 @@
   </section>
 
 
+  <!-- ─── RSVP Section ─── -->
+  <section class="section rsvp" id="rsvp">
+    <div class="section__inner">
+      <div class="ornament animate-item" data-animate="fade-up">
+        ❦
+      </div>
+
+      <h2 class="section__title animate-item" data-animate="fade-up">
+        Wedding RSVP
+      </h2>
+
+      <p class="rsvp__text animate-item" data-animate="fade-up">
+        Please let us know if you can celebrate with us.
+      </p>
+
+      <form id="rsvpForm" class="rsvp__form animate-item" data-animate="fade-up">
+        <div class="rsvp__field">
+          <label for="rsvpName">Your Full Name</label>
+          <input
+                  id="rsvpName"
+                  name="name"
+                  type="text"
+                  maxlength="150"
+                  autocomplete="name"
+                  placeholder="Enter your full name"
+                  required
+          >
+        </div>
+
+        <fieldset class="rsvp__attendance">
+          <legend>Will you attend the wedding?</legend>
+
+          <label class="rsvp__choice">
+            <input type="radio" name="attendance" value="Yes" required>
+            <span>Yes, gladly!</span>
+          </label>
+
+          <label class="rsvp__choice">
+            <input type="radio" name="attendance" value="No" required>
+            <span>Sorry, I can't attend</span>
+          </label>
+        </fieldset>
+
+        <div class="rsvp__field" id="rsvpGuestSection" hidden>
+          <label for="rsvpGuests">Number of Guests</label>
+
+          <div class="rsvp__guest-controls">
+            <input
+                    id="rsvpGuestSlider"
+                    type="range"
+                    min="0"
+                    max="5"
+                    step="1"
+                    value="0"
+                    aria-label="Adjust number of guests"
+            >
+
+            <input
+                    id="rsvpGuests"
+                    name="guests"
+                    type="number"
+                    min="0"
+                    max="5"
+                    step="1"
+                    value="0"
+                    inputmode="numeric"
+                    aria-label="Number of guests"
+            >
+          </div>
+
+          <p class="rsvp__hint">
+            Choose a number between 0 and 5.
+          </p>
+        </div>
+
+        <div class="rsvp__field">
+          <label for="rsvpNotes">Additional Comments</label>
+          <textarea
+                  id="rsvpNotes"
+                  name="notes"
+                  rows="4"
+                  maxlength="2000"
+                  placeholder="Leave us a message..."
+          ></textarea>
+        </div>
+
+        <button class="btn btn--outline rsvp__submit" id="rsvpSubmit" type="submit">
+          Send RSVP
+        </button>
+
+        <p id="rsvpStatus" class="rsvp__status" role="status" aria-live="polite"></p>
+      </form>
+
+      <iframe
+              id="rsvpResponseFrame"
+              name="rsvpResponseFrame"
+              title="RSVP submission status"
+              hidden
+      ></iframe>
+    </div>
+  </section>
+
+
 
   <!-- ─── FAQ Section ─── -->
   <section class="section faq" id="faq">
