@@ -198,58 +198,6 @@
 <!--    </div>-->
 <!--  </section>-->
 
-  <!-- ─── Google Drive Photo Upload Section ─── -->
-
-
-  <section class="section photo-upload" id="photoUpload">
-    <div class="section__inner">
-      <h2 class="section__title animate-item" data-animate="fade-up">
-        Share Your Photos
-      </h2>
-
-      <p class="photo-upload__text animate-item" data-animate="fade-up">
-        Please share your wedding pictures with us.
-      </p>
-
-      <form id="photoUploadForm">
-        <input
-                type="file"
-                id="weddingPhotoFiles"
-                accept=".jpg,.jpeg,.png,.webp,.heic,.heif"
-                multiple
-                required
-        >
-
-        <p class="photo-upload__text">
-          Upload up to 30 photos at a time.
-          Each photo can be up to 30 MB.
-        </p>
-
-        <button
-                class="btn btn--outline"
-                id="photoUploadSubmit"
-                type="submit"
-        >
-          Upload Photos
-        </button>
-
-        <div id="photoUploadLoader" class="photo-upload__progress-loader" hidden>
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-
-        <p id="photoUploadStatus" role="status" aria-live="polite"></p>
-      </form>
-
-      <iframe
-              id="photoUploadFrame"
-              name="photoUploadFrame"
-              title="Photo upload status"
-              hidden
-      ></iframe>
-    </div>
-  </section>
 
 
   <!-- ─── RSVP Section ─── -->
@@ -353,6 +301,57 @@
     </div>
   </section>
 
+  <!-- ─── Google Drive Photo Upload Section ─── -->
+
+  <section class="section photo-upload" id="photoUpload">
+    <div class="section__inner">
+      <h2 class="section__title animate-item" data-animate="fade-up">
+        Share Your Photos
+      </h2>
+
+      <p class="photo-upload__text animate-item" data-animate="fade-up">
+        Please share your wedding pictures with us.
+      </p>
+
+      <form id="photoUploadForm">
+        <input
+                type="file"
+                id="weddingPhotoFiles"
+                accept=".jpg,.jpeg,.png,.webp,.heic,.heif"
+                multiple
+                required
+        >
+
+        <p class="photo-upload__text">
+          Upload up to 30 photos at a time.
+          Each photo can be up to 30 MB.
+        </p>
+
+        <button
+                class="btn btn--outline"
+                id="photoUploadSubmit"
+                type="submit"
+        >
+          Upload Photos
+        </button>
+
+        <div id="photoUploadLoader" class="photo-upload__progress-loader" hidden>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
+        <p id="photoUploadStatus" role="status" aria-live="polite"></p>
+      </form>
+
+      <iframe
+              id="photoUploadFrame"
+              name="photoUploadFrame"
+              title="Photo upload status"
+              hidden
+      ></iframe>
+    </div>
+  </section>
 
 
   <!-- ─── FAQ Section ─── -->
@@ -437,6 +436,60 @@
           </div>
         </div>
 
+        <div class="faq__item animate-item" data-animate="fade-up">
+          <button class="faq__question" type="button" aria-expanded="false">
+            <span class="faq__number">05</span>
+            <span class="faq__question-text">What to sightsee?</span>
+            <span class="faq__arrow">⌄</span>
+          </button>
+
+          <div class="faq__answer">
+            <div class="faq__answer-inner">
+              <p>
+                * Lotte Tower
+                * Gyeongbokgung Palace
+                * Bukchon Hanok Village
+                * Myeongdong
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq__item animate-item" data-animate="fade-up">
+          <button class="faq__question" type="button" aria-expanded="false">
+            <span class="faq__number">06</span>
+            <span class="faq__question-text">Where should I stay?</span>
+            <span class="faq__arrow">⌄</span>
+          </button>
+
+          <div class="faq__answer">
+            <div class="faq__answer-inner">
+              <p>
+                test
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq__item animate-item" data-animate="fade-up">
+          <button class="faq__question" type="button" aria-expanded="false">
+            <span class="faq__number">06</span>
+            <span class="faq__question-text">What are good apps to have?</span>
+            <span class="faq__arrow">⌄</span>
+          </button>
+
+          <div class="faq__answer">
+            <div class="faq__answer-inner">
+              <p>
+                For gps we recommend Kakaomap or Naver.
+                For translation Papago
+              </p>
+            </div>
+          </div>
+        </div>
+
+
+
       </div>
     </div>
   </section>
@@ -474,7 +527,6 @@ document.addEventListener("DOMContentLoaded", function () {
   updatePhotoLoader();
 });
 </script>
-<script src="script.js"></script>
 </body>
 
 

@@ -1,7 +1,7 @@
 // ── Google Drive Photo Upload ──
 
 const CONFIG = {
-  useCurtain: false,
+  useCurtain: true,
   googleDriveUploadUrl: "https://script.google.com/macros/s/AKfycbxBZdlOZQlELyzwC5orwV4yC4zrGgUrCNpYlGKY60ASzGirJc8aKmGIEVgIX8iAQ5ZX/exec",
 
   groom: {

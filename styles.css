@@ -413,7 +413,7 @@ a {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 10% center;
+  object-position: 40% center;
 }
 
 .hero__content {
@@ -524,15 +524,16 @@ a {
    Alternate ivory and beige for clear visual separation. */
 .greeting,
 .story,
-.location,
-.rsvp {
+.photo-upload,
+.location {
   background: var(--color-bg);
 }
 
 .calendar-section,
 .gallery,
 .account,
-.photo-upload,
+
+.rsvp,
 .faq {
   background: var(--color-bg-warm);
 }
@@ -1875,4 +1876,18 @@ a {
     animation: none;
   }
 }
-```
+
+
+
+/* Photo upload section background */
+.photo-upload {
+  background-color: #faf8f5;
+}
+
+
+
+/* Disable falling flower petals */
+#petalCanvas,
+.petal-canvas {
+  display: none !important;
+}
