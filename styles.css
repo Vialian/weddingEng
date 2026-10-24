@@ -1842,7 +1842,6 @@ a {
 }
 
 
-```css
 /* Photo upload spinner — matching the RSVP loader */
 
 .photo-upload__progress-loader {
@@ -1890,4 +1889,53 @@ a {
 #petalCanvas,
 .petal-canvas {
   display: none !important;
+}
+
+
+
+/* Elegant wedding photo gallery link */
+.photo-upload__gallery-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 18px auto 0;
+  padding: 12px 22px;
+  border: 1px solid var(--color-accent-light);
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.45);
+  color: var(--color-accent-dark);
+  font-family: var(--font-display);
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  transition: background 0.25s ease, border-color 0.25s ease,
+  transform 0.25s ease;
+}
+
+.photo-upload__gallery-link:hover {
+  border-color: var(--color-accent);
+  background: #fff;
+  transform: translateY(-2px);
+}
+
+.photo-upload__gallery-icon {
+  font-size: 1.2rem;
+}
+
+.photo-upload__gallery-arrow {
+  font-family: sans-serif;
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+.photo-upload__gallery-link:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .photo-upload__gallery-link {
+    transition: none;
+  }
 }
